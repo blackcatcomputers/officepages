@@ -9,24 +9,32 @@
 
 <body>
     <p>This add-in will insert the text 'Helloooo world!' in a new message.</p>
-    <button id="helloButton">Say hellooooo</button>
+    <button id="helloButton">Say hellooooo zzz1</button>
 
     <!-- The following image URL tracks diagnostic data for this sample add-in. Please remove the image tag if you reuse this sample in your own code project. -->
     <img src="https://pnptelemetry.azurewebsites.net/pnp-officeaddins/samples/outlook-add-in-hello-world-run" />
 </body>
 
 <script>
+	let item;
 
-    Office.onReady((info) => {
-        if (info.host === Office.HostType.Outlook) {
-            document.getElementById("helloButton").onclick = sayHelloT;
-        }
-    });
+	// Confirms that the Office.js library is loaded.
+	Office.onReady((info) => {
+		if (info.host === Office.HostType.Outlook) {
+			item = Office.context.mailbox.item;
+			
+			 document.getElementById("helloButton").onclick = setSubject;
+		}
+	});
 
+   
     /**
      * Writes 'Hello world!' to a new message body.
      */
     function sayHelloT() {
+	
+
+	
         Office.context.mailbox.item.body.setAsync(
             "Hello world 8!",
             {
@@ -42,6 +50,37 @@
             }
         );
     }
+	
+	
+
+
+// Sets the subject of the item that the user is composing.
+function setSubject() {
+    // Customize the subject with today's date.
+    const today = new Date();
+    const subject = `Summary for ${today.toLocaleDateString()}`;
+
+    item.subject.setAsync(
+        subject,
+        { asyncContext: { optionalVariable1: 1, optionalVariable2: 2 } },
+        (asyncResult) => {
+            if (asyncResult.status === Office.AsyncResultStatus.Failed) {
+                write(asyncResult.error.message);
+                return;
+            }
+
+            /*
+              The subject was successfully set.
+              Run additional operations appropriate to your scenario and
+              use the optionalVariable1 and optionalVariable2 values as needed.
+            */
+        });
+}
+
+// Writes to a div with id="message" on the page.
+function write(message) {
+    document.getElementById("message").innerText += message; 
+}
 
 </script>
 
