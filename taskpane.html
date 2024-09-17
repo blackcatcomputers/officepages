@@ -15,13 +15,14 @@
 </body>
 
 <script>
-	  let item;
-
+	let item;
+	
     // Confirms that the Office.js library is loaded.
     Office.onReady((info) => {
         if (info.host === Office.HostType.Outlook) {
             item = Office.context.mailbox.item;
             document.getElementById("helloButton").onclick = setSubject;
+			Office.actions.associate("onMessageSendHandler", onMessageSendHandler);
         }
     });
 
@@ -55,6 +56,29 @@
         document.getElementById("message").innerText = message; 
     }
 
+
+
+	function onMessageSendHandler(event) {
+	  Office.context.mailbox.item.subject.getAsync(function(result) {
+		if (result.status === Office.AsyncResultStatus.Succeeded) {
+		  const subject = result.value;
+		  const regex = /^\d{4}:/;
+		  const hasCorrectFormat = regex.test(subject);
+		  
+		  if (!hasCorrectFormat) {
+			event.completed({ allowEvent: false, errorMessage: "Subject must start with 4 digits followed by a colon." });
+		  } else {
+			event.completed({ allowEvent: true });
+		  }
+		} else {
+		  // Handle the error case
+		  event.completed({ allowEvent: false, errorMessage: "Failed to get subject." });
+		}
+	  });
+
+	  // Ensure the function doesn't complete before the async operation completes
+	  event.completed({ allowEvent: false });
+	}
 </script>
 
 </html>
