@@ -9,10 +9,9 @@
 
 <body>
     <p>This add-in will insert the text 'Helloooo world!' in a new message.</p>
-    <button id="helloButton">Say hellooooo zzz1a 33</button>
+    <button id="helloButton">Say hellooooo zzz1a 33 44</button>
 
-    <!-- The following image URL tracks diagnostic data for this sample add-in. Please remove the image tag if you reuse this sample in your own code project. -->
-    <img src="https://pnptelemetry.azurewebsites.net/pnp-officeaddins/samples/outlook-add-in-hello-world-run" />
+
 </body>
 
 <script>
@@ -78,8 +77,8 @@ function setSubject() {
 			  const regex = /^\d{4}:/;
 			  const hasFormat = regex.test(subject);
 			  
-			  if (!hasFormat) {
-				// Show dialog box if format matches
+			  
+			  // Show dialog box if format matches
 				Office.context.ui.displayDialogAsync(
 				  'https://blackcatcomputers.github.io/officepages/taskpane.html',
 				  {height: 30, width: 20},
@@ -88,6 +87,10 @@ function setSubject() {
 					  console.error('Dialog box could not be displayed:', result.error.message);
 					}
 				  }
+				  
+				  
+			  if (!hasFormat) {
+				
 				);
 			  } else {
 				console.log("Subject does not have '4 digits:' format");
