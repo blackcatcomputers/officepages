@@ -9,102 +9,47 @@
 
 <body>
     <p>This add-in will insert the text 'Helloooo world!' in a new message.</p>
-    <button id="helloButton">Say hellooooo zzz1a 33 44</button>
+    <button id="helloButton">Say hellooooo zzz1a 33 44d</button>
 
 
 </body>
 
 <script>
-	let item;
+	  let item;
 
-	// Confirms that the Office.js library is loaded.
-	Office.onReady((info) => {
-		if (info.host === Office.HostType.Outlook) {
-			item = Office.context.mailbox.item;
-			
-			 document.getElementById("helloButton").onclick = setSubject;
-		}
-	});
+    // Confirms that the Office.js library is loaded.
+    Office.onReady((info) => {
+        if (info.host === Office.HostType.Outlook) {
+            item = Office.context.mailbox.item;
+            document.getElementById("helloButton").onclick = setSubject;
+        }
+    });
 
-   
-    /**
-     * Writes 'Hello world!' to a new message body.
-     */
-    function sayHelloT() {
-	
-
-	
-        Office.context.mailbox.item.body.setAsync(
-            "Hello world 8!",
-            {
-                coercionType: "html", // Write text as HTML
-            },
-
-            // Callback method to check that setAsync succeeded
-            function (asyncResult) {
-                if (asyncResult.status ==
-                    Office.AsyncResultStatus.Failed) {
-                    write(asyncResult.error.message);
-                }
-            }
-        );
-    }
-	
-	
-
-
-// Sets the subject of the item that the user is composing.
-function setSubject() {
+  function setSubject() {
     // Customize the subject with today's date.
     const today = new Date();
     const subject = `Summary for ${today.toLocaleDateString()}`;
 
+    // Correct usage of setAsync
     item.subject.setAsync(
         subject,
         { asyncContext: { optionalVariable1: 1, optionalVariable2: 2 } },
         (asyncResult) => {
             if (asyncResult.status === Office.AsyncResultStatus.Failed) {
                 write(asyncResult.error.message);
-                return;
-            }
+            }   
+        }
+    );
 
-            /*
-              The subject was successfully set.
-              Run additional operations appropriate to your scenario and
-              use the optionalVariable1 and optionalVariable2 values as needed.
-            */
-			   const subject = result.value;
-			  const regex = /^\d{4}:/;
-			  const hasFormat = regex.test(subject);
-			  
-			  
-			  // Show dialog box if format matches
-				Office.context.ui.displayDialogAsync(
-				  'https://blackcatcomputers.github.io/officepages/taskpane.html',
-				  {height: 30, width: 20},
-				  function(result) {
-					if (result.status === Office.AsyncResultStatus.Failed) {
-					  console.error('Dialog box could not be displayed:', result.error.message);
-					}
-				  }
-				  
-				  
-			  if (!hasFormat) {
-				
-				);
-			  } else {
-				console.log("Subject does not have '4 digits:' format");
-			  }
-			
-			
-			
-        });
-}
-
-// Writes to a div with id="message" on the page.
-function write(message) {
-    document.getElementById("message").innerText += message; 
-}
+    // Correct usage of displayDialogAsync
+    Office.context.ui.displayDialogAsync(
+        'https://blackcatcomputers.github.io/officepages/taskpane.html'
+    );        
+	}
+    // Writes to a div with id="message" on the page.
+    function write(message) {
+        document.getElementById("message").innerText = message; 
+    }
 
 </script>
 
