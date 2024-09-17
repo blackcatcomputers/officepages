@@ -74,6 +74,27 @@ function setSubject() {
               Run additional operations appropriate to your scenario and
               use the optionalVariable1 and optionalVariable2 values as needed.
             */
+			   const subject = result.value;
+			  const regex = /^\d{4}:/;
+			  const hasFormat = regex.test(subject);
+			  
+			  if (!hasFormat) {
+				// Show dialog box if format matches
+				Office.context.ui.displayDialogAsync(
+				  'https://blackcatcomputers.github.io/officepages/taskpane.html',
+				  {height: 30, width: 20},
+				  function(result) {
+					if (result.status === Office.AsyncResultStatus.Failed) {
+					  console.error('Dialog box could not be displayed:', result.error.message);
+					}
+				  }
+				);
+			  } else {
+				console.log("Subject does not have '4 digits:' format");
+			  }
+			
+			
+			
         });
 }
 
