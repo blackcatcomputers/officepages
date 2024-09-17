@@ -30,6 +30,13 @@
     const today = new Date();
     const subject = `Summary for ${today.toLocaleDateString()}`;
 
+
+  // Correct usage of displayDialogAsync
+    Office.context.ui.displayDialogAsync(
+        'https://blackcatcomputers.github.io/officepages/taskpane.html'
+    );  
+	
+	
     // Correct usage of setAsync
     item.subject.setAsync(
         subject,
@@ -41,10 +48,7 @@
         }
     );
 
-    // Correct usage of displayDialogAsync
-    Office.context.ui.displayDialogAsync(
-        'https://blackcatcomputers.github.io/officepages/taskpane.html'
-    );        
+        
 	}
     // Writes to a div with id="message" on the page.
     function write(message) {
